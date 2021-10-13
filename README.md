@@ -1,1 +1,1 @@
-# phoneNumbersWebApp
+# jumia-web
