@@ -21,9 +21,9 @@ import com.jumia.app.repository.CustomerRepository;
 @Service
 public class JumiaAppServiceImpl implements JumiaAppService {
 
-	private static final String INVALID = "invalid";
+	private static final String INVALID = "Invalid";
 
-	private static final String VALID = "valid";
+	private static final String VALID = "Valid";
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -46,7 +46,7 @@ public class JumiaAppServiceImpl implements JumiaAppService {
 				String phoneNumber = customer.getPhoneNumber();
 
 				if (phoneNumber != null) {
-					phoneNumbers.add(getPhoneNumberListingDto(codeCountryMap, phoneNumber));
+					addPhoneNumberListingDto(codeCountryMap, phoneNumber, phoneNumbers);
 				}
 			}
 
@@ -55,15 +55,19 @@ public class JumiaAppServiceImpl implements JumiaAppService {
 		return phoneNumbers;
 	}
 
-	private PhoneNumberListingDto getPhoneNumberListingDto(Map<String, Country> codeCountryMap, String phoneNumber) {
+	private void addPhoneNumberListingDto(Map<String, Country> codeCountryMap, String phoneNumber,
+			List<PhoneNumberListingDto> phoneNumbers) {
 		PhoneNumberListingDto phoneNumberListingDto = new PhoneNumberListingDto();
 		String code = phoneNumber.substring(1, 4);
-		Country country = codeCountryMap.get(code);
-		phoneNumberListingDto.setCountry(modelMapper.map(country, CountryDto.class));
-		phoneNumberListingDto.setNumber(phoneNumber);
-		phoneNumberListingDto.setState(getState(phoneNumber, country.getValidationRegex()));
+		Country country = codeCountryMap.get('+' + code);
 
-		return phoneNumberListingDto;
+		if (country != null) {
+			phoneNumberListingDto.setCountry(modelMapper.map(country, CountryDto.class));
+			phoneNumberListingDto.setNumber(phoneNumber);
+			phoneNumberListingDto.setState(getState(phoneNumber, country.getValidationRegex()));
+
+			phoneNumbers.add(phoneNumberListingDto);
+		}
 	}
 
 	private String getState(String phoneNumber, String validationRegex) {
