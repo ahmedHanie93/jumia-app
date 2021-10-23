@@ -20,23 +20,21 @@ export default class DropDownFilter extends Component {
     const countryOptions = this.props.countries.map((country) => {
       return <option>{country}</option>;
     });
-    const filterWrapperStyle = {
-      width: "100%",
-      display: "inline-flex",
-    };
-    const filterStyle = {
-      width: "16%",
-      display: "inline-flex",
-      paddingRight: "9.5%",
-    };
     return (
-      <div class="filtersWrapper" style={filterWrapperStyle}>
-        <div class="filter" style={filterStyle}>
+      <div
+        class="filtersWrapper"
+        style={{ width: `100%`, display: `inline-flex` }}
+      >
+        <div
+          class="filter"
+          style={{ width: `16%`, display: `inline-flex`, paddingRight: `9.5%` }}
+        >
           <div class="filter__label" style={{ width: `45%` }}>
             <label>Filter By State:</label>
           </div>
           <div style={{ width: `50%` }}>
-            <select style={{ width: `100%` }}
+            <select
+              style={{ width: `100%` }}
               defaultValue="vesselName"
               onChange={(e) => this.props.onChangeStateFilter(e.target.value)}
             >
@@ -44,12 +42,13 @@ export default class DropDownFilter extends Component {
             </select>
           </div>
         </div>
-        <div class="filter" style={{width: `20%`,display: `inline-flex`}}>
+        <div class="filter" style={{ width: `20%`, display: `inline-flex` }}>
           <div class="filter__label" style={{ width: `45%` }}>
             <label>Filter By Country:</label>
           </div>
           <div class="filter__select" style={{ width: `40%` }}>
-            <select style={{ width: `100%` }}
+            <select
+              style={{ width: `100%` }}
               defaultValue="vesselName"
               onChange={(e) => this.props.onChangeCountryFilter(e.target.value)}
             >
