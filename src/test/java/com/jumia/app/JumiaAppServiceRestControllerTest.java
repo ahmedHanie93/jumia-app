@@ -25,6 +25,11 @@ import com.jumia.app.service.JumiaAppService;
 @WebMvcTest
 class JumiaAppServiceRestControllerTest {
 
+	private static final PhoneNumberListingDto SERVICE_RETURN_VALUE = new PhoneNumberListingDto(
+			new CountryDto("Morocco", "+212"), "(212) 6007989253", "Invalid");
+	private static final String URL = "/phonenumbers";
+	private static final String EXPECTED_RESPONSE = "[{\"country\":{\"name\":\"Morocco\",\"code\":\"+212\"},\"number\":\"(212) 6007989253\",\"state\":\"Invalid\"}]";
+
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -33,13 +38,12 @@ class JumiaAppServiceRestControllerTest {
 
 	@Test
 	public void testController() throws Exception {
-		when(jumiaAppService.findAllPhoneNumbers()).thenReturn(
-				List.of(new PhoneNumberListingDto(new CountryDto("Morocco", "+212"), "(212) 6007989253", "Invalid")));
+		when(jumiaAppService.findAllPhoneNumbers()).thenReturn(List.of(SERVICE_RETURN_VALUE));
 
-		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/phonenumbers")
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(URL)
 				.accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-		String expected = "[{\"country\":{\"name\":\"Morocco\",\"code\":\"+212\"},\"number\":\"(212) 6007989253\",\"state\":\"Invalid\"}]";
+		String expected = EXPECTED_RESPONSE;
 
 		assertEquals(expected, result.getResponse().getContentAsString());
 	}

@@ -21,6 +21,12 @@ import com.jumia.app.repository.CustomerRepository;
 @Service
 public class JumiaAppServiceImpl implements JumiaAppService {
 
+	private static final int CLOSE_PARENTHES = 4;
+
+	private static final int OPEN_PARENTHES = 1;
+
+	private static final char PLUS_CHAR = '+';
+
 	private static final String INVALID = "Invalid";
 
 	private static final String VALID = "Valid";
@@ -58,8 +64,8 @@ public class JumiaAppServiceImpl implements JumiaAppService {
 	private void addPhoneNumberListingDto(Map<String, Country> codeCountryMap, String phoneNumber,
 			List<PhoneNumberListingDto> phoneNumbers) {
 		PhoneNumberListingDto phoneNumberListingDto = new PhoneNumberListingDto();
-		String code = phoneNumber.substring(1, 4);
-		Country country = codeCountryMap.get('+' + code);
+		String code = phoneNumber.substring(OPEN_PARENTHES, CLOSE_PARENTHES);
+		Country country = codeCountryMap.get(PLUS_CHAR + code);
 
 		if (country != null) {
 			phoneNumberListingDto.setCountry(modelMapper.map(country, CountryDto.class));

@@ -23,10 +23,10 @@ import com.jumia.app.service.JumiaAppService;
 class JumiaAppServiceTests {
 
 	private static final Country MOROCCO = new Country(0, "Morocco", "+212", "\\(212\\)\\  ?[5-9]\\d{8}$");
-
 	private static final Customer VALID_CUSTOMER = new Customer(1, "Mohamed", "(212) 698054317");
-
 	private static final Customer INVALID_CUSTOMER = new Customer(0, "Ahmed", "(212) 6007989253");
+	private static final Customer NULL_NUMER_CUSTOMER = new Customer(0, "Ahmed", null);
+	private static final Customer NON_EXISTENT_CODE_CUSTOMER = new Customer(1, "Mohamed", "(444) 698054317");
 
 	@Autowired
 	private JumiaAppService jumiaAppService;
@@ -39,8 +39,7 @@ class JumiaAppServiceTests {
 
 	@Test
 	public void findAllPhoneNumbersEmptyDBTest() {
-		when(customerRepository.findAll()).thenReturn(new ArrayList<>());
-		when(countryRepository.findAll()).thenReturn(new ArrayList<>());
+		mockRepositoriesBehavior(new ArrayList<>(), new ArrayList<>());
 
 		List<PhoneNumberListingDto> phoneNumbers = jumiaAppService.findAllPhoneNumbers();
 		assertNotNull(phoneNumbers);
@@ -49,8 +48,7 @@ class JumiaAppServiceTests {
 
 	@Test
 	public void findAllPhoneNumbersValidDataTest() {
-		when(customerRepository.findAll()).thenReturn(List.of(INVALID_CUSTOMER, VALID_CUSTOMER));
-		when(countryRepository.findAll()).thenReturn(List.of(MOROCCO));
+		mockRepositoriesBehavior(List.of(INVALID_CUSTOMER, VALID_CUSTOMER), List.of(MOROCCO));
 
 		List<PhoneNumberListingDto> phoneNumbers = jumiaAppService.findAllPhoneNumbers();
 		assertEquals(2, phoneNumbers.size());
@@ -58,8 +56,7 @@ class JumiaAppServiceTests {
 
 	@Test
 	public void findAllPhoneNumbersStateTest() {
-		when(customerRepository.findAll()).thenReturn(List.of(INVALID_CUSTOMER, VALID_CUSTOMER));
-		when(countryRepository.findAll()).thenReturn(List.of(MOROCCO));
+		mockRepositoriesBehavior(List.of(INVALID_CUSTOMER, VALID_CUSTOMER), List.of(MOROCCO));
 
 		List<PhoneNumberListingDto> phoneNumbers = jumiaAppService.findAllPhoneNumbers();
 		assertNotNull(phoneNumbers);
@@ -69,8 +66,7 @@ class JumiaAppServiceTests {
 
 	@Test
 	public void findAllPhoneNumbersNullDBNumber() {
-		when(customerRepository.findAll()).thenReturn(List.of(new Customer(0, "Ahmed", null), VALID_CUSTOMER));
-		when(countryRepository.findAll()).thenReturn(List.of(MOROCCO));
+		mockRepositoriesBehavior(List.of(NULL_NUMER_CUSTOMER, VALID_CUSTOMER), List.of(MOROCCO));
 
 		List<PhoneNumberListingDto> phoneNumbers = jumiaAppService.findAllPhoneNumbers();
 		assertNotNull(phoneNumbers);
@@ -79,13 +75,16 @@ class JumiaAppServiceTests {
 
 	@Test
 	public void findAllPhoneNumbersDBWrongCodeCountry() {
-		when(customerRepository.findAll())
-				.thenReturn(List.of(new Customer(0, "Ahmed", null), new Customer(1, "Mohamed", "(444) 698054317")));
-		when(countryRepository.findAll()).thenReturn(List.of(MOROCCO));
+		mockRepositoriesBehavior(List.of(NULL_NUMER_CUSTOMER, NON_EXISTENT_CODE_CUSTOMER), List.of(MOROCCO));
 
 		List<PhoneNumberListingDto> phoneNumbers = jumiaAppService.findAllPhoneNumbers();
 
 		assertNotNull(phoneNumbers);
 		assertEquals(0, phoneNumbers.size());
+	}
+
+	private void mockRepositoriesBehavior(List<Customer> customers, List<Country> countries) {
+		when(customerRepository.findAll()).thenReturn(customers);
+		when(countryRepository.findAll()).thenReturn(countries);
 	}
 }
