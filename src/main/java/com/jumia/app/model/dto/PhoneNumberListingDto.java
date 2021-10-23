@@ -8,6 +8,16 @@ public class PhoneNumberListingDto {
 
 	private String state;
 
+	public PhoneNumberListingDto() {
+	}
+
+	public PhoneNumberListingDto(CountryDto country, String number, String state) {
+		super();
+		this.country = country;
+		this.number = number;
+		this.state = state;
+	}
+
 	public CountryDto getCountry() {
 		return country;
 	}

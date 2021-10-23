@@ -17,6 +17,16 @@ public class Country extends BasicEntity {
 	@Column(name = "regex")
 	private String validationRegex;
 
+	public Country() {
+	}
+
+	public Country(Integer id, String name, String code, String validationRegex) {
+		super(id);
+		this.name = name;
+		this.code = code;
+		this.validationRegex = validationRegex;
+	}
+
 	public String getName() {
 		return name;
 	}

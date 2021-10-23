@@ -15,11 +15,6 @@ public class JumiaAppRestController {
 	@Autowired
 	private JumiaAppService jumiaAppService;
 
-	@GetMapping(value = "info")
-	public String getInfo() {
-		return "The app is up...";
-	}
-
 	@GetMapping(value = "/phonenumbers")
 	public List<PhoneNumberListingDto> findAllPhoneNumbers() {
 		return jumiaAppService.findAllPhoneNumbers();

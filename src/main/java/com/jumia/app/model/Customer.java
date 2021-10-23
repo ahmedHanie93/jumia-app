@@ -14,6 +14,16 @@ public class Customer extends BasicEntity {
 	@Column(name = "phone")
 	private String phoneNumber;
 
+	public Customer() {
+		super();
+	}
+
+	public Customer(Integer id, String name, String phoneNumber) {
+		super(id);
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+	}
+
 	public String getName() {
 		return name;
 	}

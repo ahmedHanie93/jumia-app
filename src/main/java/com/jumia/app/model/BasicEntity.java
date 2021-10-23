@@ -16,6 +16,15 @@ public abstract class BasicEntity {
 	@Column(name = "id")
 	private Integer id;
 
+	public BasicEntity() {
+
+	}
+
+	public BasicEntity(Integer id) {
+		super();
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

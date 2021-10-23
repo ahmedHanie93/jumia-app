@@ -6,6 +6,15 @@ public class CountryDto {
 
 	private String code;
 
+	public CountryDto() {
+	}
+
+	public CountryDto(String name, String code) {
+		super();
+		this.name = name;
+		this.code = code;
+	}
+
 	public String getName() {
 		return name;
 	}
