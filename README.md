@@ -8,7 +8,7 @@ mvn clean package
 docker build --tag=jumia-app:latest .
 docker run -d -p 8080:8080 jumia-app:latest
 ```
-There is a sample sqllite databse include in the project by name `sample.db`
+There is a sample sqllite databse included in the project by name `sample.db`
 
 Future plans:
 - Use migrations to create tables.
